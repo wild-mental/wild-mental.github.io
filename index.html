@@ -62,10 +62,9 @@
                 <button class="nav-mobile-toggle" type="button" id="mobileToggle" aria-label="메뉴 열기">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="language-switch" href="?lang=en" aria-label="영문 이력서 보기">
-                    <span class="language-switch-current" lang="ko">KO</span>
-                    <span class="language-switch-divider" aria-hidden="true">/</span>
-                    <span lang="en">EN</span>
+                <a class="language-switch is-kr" href="?lang=en" aria-label="영문 이력서 보기">
+                    <span class="language-switch-option language-switch-option-kr is-active" lang="ko">KR</span>
+                    <span class="language-switch-option language-switch-option-en" lang="en">EN</span>
                 </a>
             </div>
         </div>
@@ -1384,6 +1383,7 @@
             ]);
 
             window.resumeLanguage = resumeLanguage;
+            document.documentElement.dataset.resumeLang = resumeLanguage;
             if (resumeLanguage !== "en") return;
 
             document.documentElement.lang = "en";
@@ -1420,10 +1420,20 @@
                 });
             });
 
+            const satisfactionImageButton = document.querySelector("#satisfaction-evidence .evidence-image-btn");
+            const satisfactionImage = satisfactionImageButton && satisfactionImageButton.querySelector("img");
+            const satisfactionImageEn = "assets/enterprise-it-training-satisfaction_en.png";
+            if (satisfactionImageButton && satisfactionImage) {
+                satisfactionImageButton.setAttribute("data-bs-image", satisfactionImageEn);
+                satisfactionImage.src = satisfactionImageEn;
+            }
+
             document.querySelectorAll(".language-switch").forEach(function (el) {
+                el.classList.remove("is-kr");
+                el.classList.add("is-en");
                 el.href = window.location.pathname + window.location.hash;
                 el.setAttribute("aria-label", "View Korean resume");
-                el.innerHTML = '<span lang="ko">KO</span><span class="language-switch-divider" aria-hidden="true">/</span><span class="language-switch-current" lang="en">EN</span>';
+                el.innerHTML = '<span class="language-switch-option language-switch-option-kr" lang="ko">KR</span><span class="language-switch-option language-switch-option-en is-active" lang="en">EN</span>';
             });
 
             document.querySelectorAll(".mobile-language-switch").forEach(function (el) {
