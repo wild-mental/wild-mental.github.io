@@ -381,6 +381,34 @@ section, header, footer { padding: 0; }
     padding: 6px 10px;
     font-size: 16px;
 }
+.language-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 54px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: var(--rounded-pill);
+    color: var(--on-dark);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+}
+.language-switch:hover {
+    color: var(--on-dark);
+    border-color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
+.language-switch-current {
+    font-weight: 600;
+    color: var(--primary-on-dark);
+}
+.language-switch-divider {
+    color: rgba(255, 255, 255, 0.45);
+}
 
 @media (max-width: 833px) {
     .global-nav .nav-links { display: none; }

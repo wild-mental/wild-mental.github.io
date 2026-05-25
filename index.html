@@ -31,6 +31,7 @@
     />
 
     <link rel="stylesheet" href="styles.css" />
+    <link rel="alternate" hreflang="en" href="?lang=en" />
 </head>
 <body>
     <!-- ============================================================
@@ -61,6 +62,11 @@
                 <button class="nav-mobile-toggle" type="button" id="mobileToggle" aria-label="메뉴 열기">
                     <i class="bi bi-list"></i>
                 </button>
+                <a class="language-switch" href="?lang=en" aria-label="영문 이력서 보기">
+                    <span class="language-switch-current" lang="ko">KO</span>
+                    <span class="language-switch-divider" aria-hidden="true">/</span>
+                    <span lang="en">EN</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -75,6 +81,7 @@
         <a href="#projects">프로젝트</a>
         <a href="mailto:prfsr.limitless@gmail.com">Contact</a>
         <a href="https://www.linkedin.com/in/pbjworking/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="mobile-language-switch" href="?lang=en" lang="en">English Version</a>
     </div>
 
     <!-- ============================================================
@@ -1113,6 +1120,319 @@
     <!-- Chart.js (used by the in-page Kidsnote ad-revenue chart) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script>
+        const resumeLanguage = new URLSearchParams(window.location.search).get("lang") === "en" ? "en" : "ko";
+
+        // Lightweight in-place translation keeps the Korean resume as the source
+        // while providing a full English version from the same document.
+        (function () {
+            const koToEn = new Map([
+                ["박병준 | AI & IT 컨설턴트 프로필", "Byungjun Park | AI & IT Consultant Profile"],
+                ["박병준 · AI & IT 컨설턴트", "Byungjun Park · AI & IT Consultant"],
+                ["박병준 · AI & IT Consultant", "Byungjun Park · AI & IT Consultant"],
+                ["박병준", "Byungjun Park"],
+                ["Park Byungjun", "박병준"],
+                ["소개", "About"],
+                ["핵심 역량", "Core Strengths"],
+                ["KDT 수료", "KDT Outcomes"],
+                ["강의", "Teaching"],
+                ["경력", "Career"],
+                ["프로젝트", "Projects"],
+                ["강의 경력", "Teaching Experience"],
+                ["현업 경력", "Professional Experience"],
+                ["주요 프로젝트", "Key Projects"],
+                ["메뉴 열기", "Open menu"],
+                ["영문 이력서 보기", "View English resume"],
+                ["카카오톡 오픈프로필 열기", "Open KakaoTalk open profile"],
+                ["박병준 프로필 사진", "Profile photo of Byungjun Park"],
+
+                ["AI · 빅데이터 · 클라우드 생태계를", "I bring AI, big data, and cloud technologies into"],
+                ["뉴스 속도로", "education and engineering at news-cycle speed"],
+                ["교육과 엔지니어링에 적용합니다.", "with practical execution."],
+                ["KDT 장기과정", "Long-form KDT programs"],
+                ["2기수 연속 100% 수료, 만족도 100% 추천", "two consecutive cohorts with 100% completion and 100% recommendation in satisfaction surveys"],
+
+                ["교육 사항 & 자격", "Education & Certifications"],
+                ["학문적 배경과 클라우드 · 데이터 분야 공인 자격으로 다져진 기술 인프라.", "A technical foundation built on academic training and certified expertise in cloud and data."],
+                ["교육 사항", "Education"],
+                ["AI 빅데이터 MS & MBA", "M.S. in AI Big Data & MBA"],
+                ["컴퓨터과학 BA", "B.A. in Computer Science"],
+                ["한국방송통신대학교", "Korea National Open University"],
+                ["정치외교학 · 신문방송학 BA", "B.A. in Political Science & Diplomacy and Mass Communication"],
+                ["서강대학교", "Sogang University"],
+                ["중국어 전공", "Chinese Language Major"],
+                ["서울외국어고등학교", "Seoul Foreign Language High School"],
+                ["자격 사항", "Certifications"],
+                ["정보처리기사", "Engineer Information Processing"],
+                ["국가공인 SQL 개발자", "SQL Developer, National Certification"],
+                ["한국산업인력공단", "HRD Korea"],
+                ["한국데이터진흥원", "Korea Data Agency"],
+
+                ["차별화된 3가지 핵심 역량", "Three Differentiated Core Strengths"],
+                ["뉴스 속도의 최신 교육, 100% 수료의 학습자 맞춤 교육, 장애율 0%의 엔지니어링.", "Up-to-date training at news-cycle speed, learner-centered instruction with 100% completion, and engineering with a 0% development incident rate."],
+                ["급변하는 기술 생태계를 뉴스 속도로 업데이트하는 교육", "Training that keeps pace with a rapidly changing technology ecosystem"],
+                ["AI · 빅데이터 · 클라우드 최신 도구의 즉시 도입", "Rapid adoption of the latest AI, big data, and cloud tools"],
+                ["진행 중인 교육과정에 트렌드를 곧바로 반영하는", "Curricula are continuously refreshed with current industry trends, delivering"],
+                ["뉴스 레벨의 최신 교육", "news-cycle-level relevance"],
+                ["교육 현장 ↔ 기술 실무의 가교 역할", "Bridging education and real-world technology practice"],
+                ["현업 엔지니어링 솔루션을 그대로 다루는 실무형 교육자료와 현장 니즈를 실시간 반영", "Practice-oriented materials use production engineering solutions and respond to field needs in real time."],
+                ["수료율 100%의 학습자 맞춤, 미래기술 + 실전기술 융합 교육", "Learner-centered programs with 100% completion, combining future technologies with hands-on engineering"],
+                ["복잡한 개념의 명확한 전달, 맞춤형 성장 경로 설계", "Clear explanation of complex concepts and tailored growth paths for learners"],
+                ["2024 & 2025년 KDT 장기과정", "2024 & 2025 Long-Form KDT Programs"],
+                ["2기수 연속 100% 수료", "100% completion across two consecutive cohorts"],
+                ["실습 중심 기획 · AI · 클라우드 · 백엔드 교육 직접 설계", "Direct design of hands-on planning, AI, cloud, and backend programs"],
+                ["기업 IT 실무자 교육의 현장 중심 니즈를 완벽히 반영한 특강으로", "Specialized sessions closely reflect the needs of enterprise IT practitioners, achieving"],
+                ["최고 수준의 만족도 달성", "top-tier satisfaction"],
+                ["K-12 ~ 대학생 ~ 현직 기술 전문가까지 전 수준 멘토링", "Mentoring across every level, from K-12 and university students to working technology professionals"],
+                ["미국 인디애나주 초중고 · 퍼듀대학교, 입직자 취업준비 · 진로 멘토링, 현직자 기술교육 전 영역", "K-12 schools in Indiana, Purdue University, job-entry preparation, career mentoring, and professional technical training"],
+                ["확장성과 안정성 설계 기술력으로 장애율 0%의 엔지니어링", "Engineering scalable and resilient systems with a 0% development incident rate"],
+                ["확장 가능한 시스템 설계 · 구현 실무 경험", "Practical experience designing and implementing scalable systems"],
+                ["DAU 300만+", "3M+ DAU"],
+                ["코인거래소 실시간 알림 시스템 & 광고 시스템에서 대량 트래픽 제어", "High-volume traffic control for cryptocurrency exchange real-time notifications and advertising systems"],
+                ["클라우드 배포 · 운영 주도, 안정성과 효율성 극대화", "Led cloud deployment and operations to maximize stability and efficiency"],
+                ["(주)키즈노트 광고시스템 리뉴얼 런칭 후", "After launching the Kidsnote advertising-system renewal,"],
+                ["2년간 개발 장애율 0%", "0% development incident rate over two years"],
+                ["데이터 파이프라인 최적화 · 분산 아키텍처 설계", "Data pipeline optimization and distributed architecture design"],
+                ["MSA 시스템 설계 · 구축, Kafka 기반 이벤트 스트리밍 및 재직자 직무 교육", "Designed and built MSA systems, Kafka-based event streaming, and training for incumbent engineers."],
+
+                ["기업 IT 실무자 교육 만족도", "Enterprise IT Training Satisfaction"],
+                ["기업 IT 실무자 교육 만족도 그래프", "Enterprise IT training satisfaction chart"],
+                ["원본 보기", "View Original"],
+                ["하나금융그룹 · KT · LG헬로비전 · KOICA · 모두의연구소", "Hana Financial Group · KT · LG HelloVision · KOICA · ModuLabs"],
+                ["— 기업 실무자 대상 강의에서 최고 수준의 만족도를 달성합니다.", "Delivers top-tier satisfaction in courses for enterprise practitioners."],
+                ["LinkedIn 동료 추천사 (2024)", "LinkedIn Recommendation from a Colleague (2024)"],
+                ["카카오 키즈노트 동료 LinkedIn 추천사", "Kakao Kidsnote colleague LinkedIn recommendation"],
+                ["“그가 감독하는 동안 발생한 서비스 장애는 0건이었습니다.”", "“There were zero service incidents while he was responsible for supervision.”"],
+                ["— 카카오 키즈노트 팀", "— Kakao Kidsnote Team"],
+
+                ["2024 & 2025년 KDT 장기과정", "2024 & 2025 Long-Form KDT Programs"],
+                ["2기수 연속 100% 수료", "Two Consecutive Cohorts, 100% Completion"],
+                ["풀스택 엔지니어 양성 1,000시간 장기과정, 2년간 총 48명", "1,000-hour long-form full-stack engineer programs, 48 learners over two years"],
+                ["— 두 기수 모두 100% 수료, 만족도 제출 인원 전원 추천.", "Both cohorts achieved 100% completion, and every survey respondent recommended the program."],
+                ["2기수 연속 수료율", "Completion Rate Across Two Consecutive Cohorts"],
+                ["2024년 · 2025년 삼육대학교 KDT", "2024 · 2025 Sahmyook University KDT"],
+                ["총 수료생 (29명 + 19명)", "Total Graduates (29 + 19)"],
+                ["전원 1,000시간 장기과정 수료", "All completed the 1,000-hour long-form program"],
+                ["교육과정 만족도 추천", "Program Recommendation Rate"],
+                ["만족도 조사 제출 인원 전원 추천", "Every satisfaction survey respondent recommended the program"],
+                ["2024년 삼육대학교 KDT 1,000시간 장기과정", "2024 Sahmyook University KDT 1,000-Hour Program"],
+                ["2025년 삼육대학교 KDT 1,000시간 장기과정", "2025 Sahmyook University KDT 1,000-Hour Program"],
+                ["29명 중 29명 수료 100%", "29 of 29 learners completed · 100%"],
+                ["19명 중 19명 수료 100%", "19 of 19 learners completed · 100%"],
+                ["만족도 조사 제출 인원 전원 추천 100%", "100% of satisfaction survey respondents recommended it"],
+                ["만족도 조사", "Satisfaction Survey"],
+                ["수강 후기", "Student Reviews"],
+                ["2024년 KDT 만족도 조사 결과", "2024 KDT satisfaction survey results"],
+                ["2024년 KDT 수강생 후기", "2024 KDT student reviews"],
+                ["2025년 KDT 만족도 조사 결과", "2025 KDT satisfaction survey results"],
+                ["2025년 KDT 수강생 후기", "2025 KDT student reviews"],
+
+                ["강의 및 교육 경력", "Teaching & Training Experience"],
+                ["2018년부터 누적된 강의 트랙 — 대기업 재직자 교육부터 KDT 장기과정, 국제기구 협력교육까지.", "A teaching portfolio built since 2018, from enterprise employee training and long-form KDT programs to international cooperation programs."],
+                ["강의 및 교육 활동", "Teaching & Training Engagement"],
+                ["기간", "Period"],
+                ["운영기관", "Host Organization"],
+                ["모두의연구소 AI 활용 서비스 기획/개발 전문가 과정 (직장인 바이브코딩 실전 프로젝트 과정) — 5기", "ModuLabs AI-Powered Service Planning/Development Expert Program (Vibe Coding Practical Project Course for Professionals) — Cohort 5"],
+                ["모두의연구소 AI 활용 서비스 기획/개발 전문가 과정 (직장인 바이브코딩 실전 프로젝트 과정) — 2기", "ModuLabs AI-Powered Service Planning/Development Expert Program (Vibe Coding Practical Project Course for Professionals) — Cohort 2"],
+                ["모두의연구소", "ModuLabs"],
+                ["삼육대학교 KDT 산학협력 학점 연계과정 (AI 활용 클라우드 네이티브 풀스택 엔지니어 양성과정)", "Sahmyook University KDT Industry-Academic Credit Program (AI-Enabled Cloud-Native Full-Stack Engineer Training Program)"],
+                ["한국정보교육원", "Korea Information Education Institute"],
+                ["구름 프로펙트 클라우드과정 특강 (체계적 프로젝트 문서화 & Kafka 핵심 개념 실무 적용)", "Goorm PROFECT Cloud Program Special Lecture (Structured Project Documentation & Practical Application of Kafka Core Concepts)"],
+                ["구름EDU", "Goorm EDU"],
+                ["스리랑카 커리어 플랫폼 IT 운영자 국내 초청교육 (웹 개발 최신 트렌드 & 생성형 AI 특강)", "Korea Invitational Training for Sri Lankan Career Platform IT Operators (Latest Web Development Trends & Generative AI Special Lecture)"],
+                ["하나금융그룹 현직자 교육 (리눅스 중급 심화 및 MSA 웹 서버 구축 및 운영 실무 특강)", "Employee Training for Hana Financial Group (Intermediate-to-Advanced Linux and Practical MSA Web Server Deployment & Operations)"],
+                ["하나금융그룹 현직자 교육 (클라우드 기반 MSA 서비스 설계 & Kubernetes (EKS) 활용 운영 자동화)", "Employee Training for Hana Financial Group (Cloud-Based MSA Service Design & Operations Automation with Kubernetes on EKS)"],
+                ["하나금융그룹", "Hana Financial Group"],
+                ["삼육대학교 KDT (클라우드 기반 풀스택 Java Spring Boot & React Web 엔지니어 양성과정)", "Sahmyook University KDT (Cloud-Based Full-Stack Java Spring Boot & React Web Engineer Training Program)"],
+                ["LG헬로비전 DX DATA SCHOOL 엔지니어 양성과정 프로젝트 멘토링", "LG HelloVision DX DATA SCHOOL Engineer Training Program Project Mentoring"],
+                ["한국전파진흥협회", "Korea Radio Promotion Association"],
+                ["KT 재직자 교육 (AWS 기반 Kafka 데이터 스트리밍 & Redis Cache 클러스터 구축 연동 과정)", "Training for KT Employees (AWS-Based Kafka Data Streaming & Redis Cache Cluster Build and Integration)"],
+                ["삼성 멀티캠퍼스", "Samsung Multicampus"],
+                ["메이커교육 분야 글로벌 서비스 기획 및 해외 진출기업 컨설팅", "Global service planning in maker education and consulting for overseas expansion"],
+                ["메이커스월드", "Makersworld"],
+                ["동국대, 건국대, 대학연합 백엔드 개발자 진로 특강", "Career lecture for backend developers at Dongguk University, Konkuk University, and inter-university programs"],
+                ["엘리트코리아", "Elite Korea"],
+                ["내일배움캠프 클라우드 웹 개발자 양성과정 프로젝트 및 진로 멘토링", "Naeilbaeum Camp Cloud Web Developer Training Program project and career mentoring"],
+                ["스파르타 코딩", "Sparta Coding"],
+                ["기아자동차 노사공동교육 (4차산업혁명 트렌드와 SW/HW 융합기술 특강)", "Kia Motors Labor-Management Joint Training (Fourth Industrial Revolution Trends and SW/HW Convergence Technology)"],
+                ["기아자동차", "Kia Motors"],
+                ["모듈형 로봇프로그래밍 교육 (미국, 중동)", "Modular robotics programming education (U.S. and Middle East)"],
+                ["럭스로보", "Luxrobo"],
+                ["임베디드SW 엔지니어 양성과정 (아두이노)", "Embedded Software Engineer Training Program (Arduino)"],
+                ["광운대학교", "Kwangwoon University"],
+                ["파이썬 웹 프로그래밍 과정 (Django)", "Python Web Programming Course (Django)"],
+                ["KG IT뱅크", "KG ITBANK"],
+
+                ["국책기관 · 글로벌 사업개발 · 백엔드 엔지니어링 · 기술교육 — 다각도의 IT 산업 이력.", "A multidisciplinary IT career spanning public-sector institutions, global business development, backend engineering, and technical education."],
+                ["회사명", "Organization"],
+                ["직위 / 직책", "Role / Title"],
+                ["직무", "Responsibilities"],
+                ["2024.01 ~ 현재", "2024.01 ~ Present"],
+                ["기술 교육 컨설턴트 및 강사", "Technical Education Consultant & Instructor"],
+                ["교육과정 설계 컨설팅 및 기술교육", "Curriculum design consulting and technical training"],
+                ["데이터스토리 허브", "Data Story Hub"],
+                ["(사외) 기술 컨설턴트 및 강사", "External Technical Consultant & Instructor"],
+                ["기업 IT 컨설팅 및 기술교육", "Enterprise IT consulting and technical training"],
+                ["키즈노트", "Kidsnote"],
+                ["연구원", "Research Engineer"],
+                ["광고 시스템 백엔드 엔지니어", "Backend Engineer for Advertising Systems"],
+                ["엑시아소프트", "Axia Soft"],
+                ["코인 거래소 백엔드 엔지니어", "Backend Engineer for Cryptocurrency Exchange"],
+                ["컨설턴트 및 강사", "Consultant & Instructor"],
+                ["메이커교육 해외시장개척 지원", "Overseas market development for maker education"],
+                ["한국생산성본부", "Korea Productivity Center"],
+                ["SW기업 해외시장개척 지원", "Overseas market development support for software companies"],
+                ["팀장", "Team Lead"],
+                ["모듈형 로봇 글로벌 사업 개발", "Global business development for modular robotics"],
+                ["한국소프트웨어산업협회", "Korea Software Industry Association"],
+                ["선임연구원", "Senior Researcher"],
+                ["SW 전문가 자격평가시험 개발", "Development of certification exams for software professionals"],
+
+                ["주요 프로젝트 이력", "Key Project Portfolio"],
+                ["기업 · 국제기구 · 연구기관과의 협업 — 콘텐츠 설계부터 엔지니어링 솔루션 출시까지.", "Collaboration with companies, international organizations, and research institutes, from content design to engineering solution launches."],
+                ["스리랑카 방문단 국내 연수", "Korea Invitational Training for Sri Lankan Delegation"],
+                ["스리랑카 방문단 국내 연수 AI Workshop — 머신러닝에서 LLM까지 시각적 · 심층적 이해부터 본격 Application 개발 워크샵까지 완주.", "Korea invitational AI workshop for a Sri Lankan delegation, covering visual and in-depth understanding from machine learning to LLMs through a full-scale application development workshop."],
+                ["IT 플랫폼 기술 트렌드 (MSA, 컨테이너 가상화, 클라우드 네이티브)", "IT platform technology trends (MSA, container virtualization, cloud-native architecture)"],
+                ["AWS 클라우드 서비스 실습", "Hands-on AWS cloud services"],
+                ["AI 산업 및 기술 트렌드 / 생성형 AI 활용 워크샵", "AI industry and technology trends / generative AI workshop"],
+                ["ITSQF 소개 및 IT 역량 기반 교육 플랫폼 설계", "Introduction to ITSQF and design of an IT competency-based training platform"],
+                ["플랫폼 운영을 위한 인프라 관리 자동화 (AWS - EKS)", "Infrastructure management automation for platform operations (AWS EKS)"],
+                ["머신러닝에서 LLM까지 핵심 개념에 대한 시각적 & 심층적 이해", "Visual and in-depth understanding of core concepts from machine learning to LLMs"],
+                ["LLM 관련 기술 소개를 통한 패러다임 학습 및 직관적인 핸즈온 실습", "Paradigm learning and intuitive hands-on practice through an introduction to LLM-related technologies"],
+                ["AI 활용 역량 종합 활용을 통한 본격적인 Application 개발 워크샵", "Full-scale application development workshop using integrated AI capabilities"],
+                ["하나금융그룹 DT", "Hana Financial Group DT"],
+                ["클라우드 네이티브 DevOps", "Cloud-Native DevOps"],
+                ["+ 리눅스 심화 특강", "+ Advanced Linux Special Lecture"],
+                ["하나금융그룹 재직자 대상 클라우드 네이티브 DevOps + 리눅스 심화 특강 — EKS 인프라부터 Rocky 리눅스 기반 보안·웹 서비스 배포까지.", "Cloud-native DevOps and advanced Linux special lecture for Hana Financial Group employees, from EKS infrastructure to Rocky Linux-based security and web service deployment."],
+                ["EKS 인프라 활용 MSA 기반 솔루션 배포 및 인프라 자동화", "Deploying MSA-based solutions on EKS infrastructure and automating infrastructure operations"],
+                ["AWS 서비스 기초 및 심화 이해와 실전 프로젝트", "Foundational and advanced understanding of AWS services with practical projects"],
+                ["MSA 시스템 기본 이해와 온프레미스, 클라우드 네이티브 실습", "Core understanding of MSA systems with on-premises and cloud-native practice"],
+                ["AWS K8s 관리형 서비스 EKS 활용 기초", "Fundamentals of AWS managed Kubernetes service EKS"],
+                ["EKS 기반 MSA 아키텍처 솔루션 배포", "Deployment of EKS-based MSA architecture solutions"],
+                ["EKS에 GitOps 및 무중단 배포 전략을 적용한 CI/CD 운영 자동화", "CI/CD operations automation using GitOps and zero-downtime deployment strategies on EKS"],
+                ["AWS 관리형 서비스와 Prometheus & Grafana 모니터링 · 알림 결합", "Integration of AWS managed services with Prometheus & Grafana monitoring and alerting"],
+                ["리눅스 심화과정 — Rocky 리눅스 기반의 네트워크와 보안, 웹 서비스 배포", "Advanced Linux course: networking, security, and web-service deployment on Rocky Linux"],
+                ["구체적인 물리적 컴퓨터 장비 레벨에서 발생하는 인프라 관리 기법과 웹 서비스 운영", "Infrastructure management and web service operations at the physical computing equipment level"],
+                ["금융 엔지니어링에 대한 미래 기술 인사이트 질문 답변 세션", "Q&A session on future technology insights for financial engineering"],
+                ["DevOps와 Enterprise Architecture 기술의 AI 결합 고도화 트렌드 토론", "Discussion on trends in AI-augmented DevOps and Enterprise Architecture"],
+                ["카카오 키즈노트", "Kakao Kidsnote"],
+                ["클라우드 네이티브 MSA", "Cloud-Native MSA"],
+                ["광고 서비스 책임 개발", "Lead Development of Advertising Service"],
+                ["클라우드 네이티브 MSA 광고 서비스 책임 개발 — 광고집행 백엔드 서버 리뉴얼 런칭, 광고 매출 증대를 위한 ML 적용 송출 로직 고도화 개발.", "Led development of a cloud-native MSA advertising service, launching the renewed ad-serving backend and improving ML-powered delivery logic to increase advertising revenue."],
+                ["Kidsnote · 광고매출 추이", "Kidsnote · Ad Revenue Trend"],
+                ["20 ~ 23년 키즈노트 광고매출", "Kidsnote Ad Revenue, 2020-2023"],
+                ["월별 매출 (단위 · 백만원) · 재직 기간(21.09 ~ 23.07)", "Monthly revenue (KRW millions) · Tenure (2021.09-2023.07)"],
+                ["표시", "highlighted"],
+                ["20~23년 키즈노트 광고매출 막대 그래프", "Bar chart of Kidsnote ad revenue from 2020 to 2023"],
+                ["↔ 마우스 휠을 굴리면 그래프가 좌우로 스크롤됩니다", "Scroll the mouse wheel to move the chart horizontally"],
+                ["↕ 페이지를 내리면 그래프가 좌우로 펼쳐집니다", "Scroll down the page to reveal the chart horizontally"],
+                ["2년간 단독 책임개발 성과", "Results from two years of sole ownership"],
+                ["광고 매출 2배 이상 성장 · 개발 장애율 0%", "More than 2x ad revenue growth · 0% development incident rate"],
+                ["광고집행 백엔드 서버 리뉴얼 런칭 및 유지보수, ML 적용 송출 로직 고도화 개발", "Launched and maintained the renewed advertising backend server and improved ML-powered delivery logic"],
+                ["카카오 클라우드 인프라 활용 서비스 개발 · 배포 · 모니터링, 분석계 구축 참여 등 전체 프로세스 수행", "Owned the full process across service development, deployment, monitoring on Kakao Cloud infrastructure, and analytics platform build-out"],
+                ["데이터 파이프라인 구축과 광고 서비스 성과 분석 및 타게팅 구조 수립을 위한 기반 분석 프로젝트 참여", "Contributed to foundational analytics for data pipeline construction, advertising performance analysis, and targeting architecture"],
+                ["엑시아소프트 · 코인빗", "Axia Soft · Coinbit"],
+                ["AWS 기반 초고속 유저 알림 서비스", "AWS-Based High-Speed User Notification Service"],
+                ["& 백오피스 / 대용량 데이터 추출 개발", "& Back Office / Large-Scale Data Export Development"],
+                ["AWS 기반 초고속 유저 알림 서비스 개발 & 백오피스 대시보드 · 대용량 데이터 추출 — 암호화폐 거래소 \"코인빗\" 초고속 거래 체결 서버 유지관리.", "Developed an AWS-based high-speed user notification service, back-office dashboard, and large-scale data export features while maintaining the high-speed trade execution server for cryptocurrency exchange Coinbit."],
+                ["초고속 처리 시스템 성능", "High-Throughput Processing Performance"],
+                ["분당 300만 건 알림 발송", "3 million notifications per minute"],
+                ["유저별 관심 자산 가격 모니터링 알림 시스템 —", "User-specific asset price monitoring notification system capable of"],
+                ["분당 300만 건 발송", "3 million notifications per minute"],
+                ["가능한 초고속 처리 시스템 구축", "through high-throughput processing"],
+                ["AWS 클라우드 서비스를 활용한 백엔드 API 개발 및 데이터 관리 프로세스 개발", "Developed backend APIs and data management processes using AWS cloud services"],
+                ["가상자산 거래소 대상의 강화된 정보보호 및 개인정보보호 관리체계(ISMS-P) 백엔드 인증 개발 참여", "Contributed to backend certification work for the strengthened ISMS-P framework required by a virtual asset exchange"],
+                ["한국직업능력연구원", "Korea Research Institute for Vocational Education & Training"],
+                ["중국 AI 교육 고도화", "Advanced AI Education in China"],
+                ["사례 벤치마킹 연구", "Benchmarking Study"],
+                ["중국 AI 교육 고도화 사례 벤치마킹 연구.", "Benchmarking study on advanced AI education in China."],
+                ["\"중국의 대학 인공지능 교육과 메이커(創客) 창업 정책 연구 (2021)\" 참여 — 한국직업능력연구원", "Participated in “Research on University AI Education and Maker Entrepreneurship Policies in China (2021)” — KRIVET"],
+                ["국내 SW 고성장 기업", "High-Growth Korean Software Companies"],
+                ["글로벌 시장 개척 컨설팅", "Global Market Expansion Consulting"],
+                ["국내 SW 고성장 기업 글로벌 시장 개척 컨설팅 — Purdue 대학교 · Plug&Play 협력 지원 등.", "Global market expansion consulting for high-growth Korean software companies, including collaboration support with Purdue University and Plug and Play."],
+                ["SW 고성장클럽 200 글로벌 진출 지원사업", "SW High-Growth Club 200 Global Expansion Support Program"],
+                ["\"SW 고성장클럽 200\" 소프트웨어기업 글로벌 진출 지원사업 주관 (Purdue 대학교, Plug&Play 협력 지원 등)", "Led the “SW High-Growth Club 200” global expansion support program for software companies, including Purdue University and Plug and Play collaboration support"],
+                ["\"글로벌 에듀테크센터 구축\" 신남방 교육사업 개발 (말레이시아 · 캄보디아 등)", "Developed the “Global EdTech Center Establishment” New Southern education business in Malaysia, Cambodia, and other markets"],
+                ["한밭대학교", "Hanbat National University"],
+                ["산학협력단 SW & HW 융합", "University-Industry Foundation SW & HW Convergence"],
+                ["메이커 교육 방법론 연구", "Maker Education Methodology Research"],
+                ["산학협력단 SW & HW 융합 메이커 교육 방법론 연구.", "Research on SW and HW convergence maker education methodology for a university-industry cooperation foundation."],
+                ["\"대학주도형 창의융합 미래인재 양성 교육과정 혁신 연구\" 수행", "Conducted “Research on Curriculum Innovation for University-Led Creative Convergence Future Talent Development”"],
+                ["미국 · 중동 · 중국 시장 진출 및", "Market Entry in the U.S., Middle East, and China"],
+                ["파트너십 · 기술교류 수행", "Partnership Development & Technical Exchange"],
+                ["미국 · 중동 · 중국 시장 진출 및 파트너십 · 기술교류 수행.", "Led market entry, partnership development, and technical exchange across the U.S., Middle East, and China."],
+                ["미국 파트너사 교육사업 개발 협력 (USRA 연구재단, SDI Innovation 등)", "Education business development collaboration with U.S. partners, including USRA and SDI Innovation"],
+                ["보도자료:", "Press Coverage:"],
+                ["사이언스타임스 — 로봇키즈의 열정으로 혁신 일궈내", "The Science Times — Young robotics students spark innovation"],
+                ["미주중앙일보 — \"로봇은 시작, 미래인재 양성이 목표\"", "Korea Daily — “Robotics is the beginning; nurturing future talent is the goal”"],
+                ["미국 파트너사 교육사업 협력 1", "U.S. partner education business collaboration 1"],
+                ["미국 파트너사 교육사업 협력 2", "U.S. partner education business collaboration 2"],
+                ["중동 지역 교육사업 개발 (UAE · 오만 · 바레인 · 말레이시아 등)", "Education business development in the Middle East, including the UAE, Oman, Bahrain, and Malaysia"],
+                ["중동 교육사업 1", "Middle East education business 1"],
+                ["중동 교육사업 2", "Middle East education business 2"],
+                ["중동 교육사업 3", "Middle East education business 3"],
+                ["아두이노 제품 및 교육전략 고도화 기술협력 수행", "Advanced Arduino product and education strategies through technical collaboration"],
+                ["— 엔지니어 간 교류, 로마 Maker Fair, 상호 방문미팅 등", "— Engineering exchange, Rome Maker Faire, and reciprocal technical meetings"],
+                ["아두이노 기술협력 1", "Arduino technical collaboration 1"],
+                ["아두이노 기술협력 2", "Arduino technical collaboration 2"],
+
+                ["강의 · 컨설팅 의뢰는 언제든 환영합니다.", "I am always open to training and consulting inquiries."],
+                ["기업 IT 실무자 교육, 장기과정 강의, 클라우드 아키텍처 설계 컨설팅까지 — 현장의 변화 속도에 맞춰 함께 일합니다.", "From enterprise IT practitioner training and long-form programs to cloud architecture consulting, I work at the pace of the field."],
+                ["이메일로 의뢰하기", "Send an Inquiry by Email"],
+                ["LinkedIn 프로필", "LinkedIn Profile"],
+                ["AI · 빅데이터 · 클라우드 생태계를 뉴스 속도로 교육과 엔지니어링에 적용합니다.", "I bring AI, big data, and cloud technologies into education and engineering at news-cycle speed."],
+                ["닫기", "Close"]
+            ]);
+
+            window.resumeLanguage = resumeLanguage;
+            if (resumeLanguage !== "en") return;
+
+            document.documentElement.lang = "en";
+            if (koToEn.has(document.title)) document.title = koToEn.get(document.title);
+
+            const skippedParents = new Set(["SCRIPT", "STYLE", "NOSCRIPT"]);
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                acceptNode: function (node) {
+                    const parent = node.parentElement;
+                    if (!parent || skippedParents.has(parent.tagName)) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    return koToEn.has(node.nodeValue.trim())
+                        ? NodeFilter.FILTER_ACCEPT
+                        : NodeFilter.FILTER_SKIP;
+                }
+            });
+
+            const nodes = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+            nodes.forEach(function (node) {
+                const original = node.nodeValue;
+                const leading = original.match(/^\s*/)[0];
+                const trailing = original.match(/\s*$/)[0];
+                node.nodeValue = leading + koToEn.get(original.trim()) + trailing;
+            });
+
+            document.querySelectorAll("[alt], [aria-label], [data-bs-caption]").forEach(function (el) {
+                ["alt", "aria-label", "data-bs-caption"].forEach(function (attr) {
+                    const value = el.getAttribute(attr);
+                    if (value && koToEn.has(value.trim())) {
+                        el.setAttribute(attr, koToEn.get(value.trim()));
+                    }
+                });
+            });
+
+            document.querySelectorAll(".language-switch").forEach(function (el) {
+                el.href = window.location.pathname + window.location.hash;
+                el.setAttribute("aria-label", "View Korean resume");
+                el.innerHTML = '<span lang="ko">KO</span><span class="language-switch-divider" aria-hidden="true">/</span><span class="language-switch-current" lang="en">EN</span>';
+            });
+
+            document.querySelectorAll(".mobile-language-switch").forEach(function (el) {
+                el.href = window.location.pathname + window.location.hash;
+                el.lang = "en";
+                el.textContent = "Korean Version";
+            });
+        })();
+
         const yearEl = document.getElementById("year");
         if (yearEl) yearEl.textContent = new Date().getFullYear();
 
@@ -1177,6 +1497,7 @@
             const track = block.querySelector("[data-chart-track]");
             const sticky = block.querySelector("[data-chart-sticky]");
             const scroller = block.querySelector("[data-chart-scroller]");
+            const isEnglish = window.resumeLanguage === "en";
 
             // Monthly ad revenue (백만원). Index 0 = 2020.01, Index 42 = 2023.07.
             const values = [
@@ -1192,10 +1513,15 @@
             // Build labels — compact ".MM"-style for most months, year prefix for January.
             // e.g. "20년 1월", "3월", "5월", ..., "21년 1월", ...
             const labels = [];
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             for (let year = 20; year <= 23; year++) {
                 const maxMonth = year === 23 ? 7 : 12;
                 for (let m = 1; m <= maxMonth; m++) {
-                    labels.push(m === 1 ? year + "년 " + m + "월" : m + "월");
+                    if (isEnglish) {
+                        labels.push(m === 1 ? "20" + year + " " + monthNames[m - 1] : monthNames[m - 1]);
+                    } else {
+                        labels.push(m === 1 ? year + "년 " + m + "월" : m + "월");
+                    }
                 }
             }
 
@@ -1216,9 +1542,12 @@
                 tenureMax: Math.max.apply(null, tenureValues)
             };
             const fmtBillion = (v) => {
-                // 백만원 -> 억원, 소수 2자리 (trailing zeros trimmed)
-                const b = v / 100;
-                return parseFloat(b.toFixed(2)) + "억";
+                if (isEnglish) {
+                    const billionKrw = v / 1000;
+                    return "KRW " + parseFloat(billionKrw.toFixed(2)) + "B";
+                }
+                const hundredMillionKrw = v / 100;
+                return parseFloat(hundredMillionKrw.toFixed(2)) + "억";
             };
 
             // Inline Chart.js plugin — paints "x.x억" on top of each bar.
@@ -1240,7 +1569,9 @@
                         ctx.fillStyle = isTenure
                             ? "rgba(255, 255, 255, 0.92)"
                             : "rgba(255, 255, 255, 0.5)";
-                        const text = (v / 100).toFixed(1) + "억";
+                        const text = isEnglish
+                            ? (v / 1000).toFixed(1) + "B"
+                            : (v / 100).toFixed(1) + "억";
                         ctx.fillText(text, bar.x, bar.y - 4);
                     });
                     ctx.restore();
@@ -1265,11 +1596,11 @@
                     // chart plot area with a comfortable padding so the type
                     // never touches the y-axis ticks.
                     const refs = [
-                        { v: stats.preAvg,    line: RED_LINE,  text: RED_TEXT,  label: "기존 평균 · " + fmtBillion(stats.preAvg),    above: true },
-                        { v: stats.preMax,    line: RED_LINE,  text: RED_TEXT,  label: "기존 최대 · " + fmtBillion(stats.preMax),    above: true },
-                        { v: stats.tenureAvg, line: BLUE_LINE, text: BLUE_TEXT, label: "재직 평균 · " + fmtBillion(stats.tenureAvg), above: true },
+                        { v: stats.preAvg,    line: RED_LINE,  text: RED_TEXT,  label: (isEnglish ? "Pre-tenure avg · " : "기존 평균 · ") + fmtBillion(stats.preAvg),    above: true },
+                        { v: stats.preMax,    line: RED_LINE,  text: RED_TEXT,  label: (isEnglish ? "Pre-tenure max · " : "기존 최대 · ") + fmtBillion(stats.preMax),    above: true },
+                        { v: stats.tenureAvg, line: BLUE_LINE, text: BLUE_TEXT, label: (isEnglish ? "Tenure avg · " : "재직 평균 · ") + fmtBillion(stats.tenureAvg), above: true },
                         // Tenure-max sits near the chart top — label BELOW its line so it isn't clipped.
-                        { v: stats.tenureMax, line: BLUE_LINE, text: BLUE_TEXT, label: "재직 최대 · " + fmtBillion(stats.tenureMax), above: false }
+                        { v: stats.tenureMax, line: BLUE_LINE, text: BLUE_TEXT, label: (isEnglish ? "Tenure max · " : "재직 최대 · ") + fmtBillion(stats.tenureMax), above: false }
                     ];
 
                     const LABEL_LEFT_PAD = 18;       // breathing room from the y-axis
@@ -1340,7 +1671,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: "광고매출 (백만원)",
+                        label: isEnglish ? "Ad Revenue (KRW millions)" : "광고매출 (백만원)",
                         data: values,
                         yAxisID: "y",
                         backgroundColor: values.map((_, i) => colorFor(i, false)),
@@ -1372,10 +1703,15 @@
                                     const i = ctx[0].dataIndex;
                                     const year = 2020 + Math.floor(i / 12);
                                     const month = (i % 12) + 1;
+                                    if (isEnglish) return monthNames[month - 1] + " " + year;
                                     return year + "년 " + month + "월";
                                 },
                                 label: (ctx) => {
                                     const v = ctx.parsed.y;
+                                    if (isEnglish) {
+                                        const tag = ctx.dataIndex >= TENURE_START ? " · Tenure" : "";
+                                        return "KRW " + v.toLocaleString("en-US") + "M" + tag;
+                                    }
                                     const won = (v * 1000000).toLocaleString("ko-KR");
                                     const tag = ctx.dataIndex >= TENURE_START ? "  · 재직 기간" : "";
                                     return won + "원" + tag;
@@ -1390,13 +1726,14 @@
                                 color: function (ctx) {
                                     // Year-prefixed January labels are highlighted brighter.
                                     const lbl = ctx.tick && ctx.tick.label;
-                                    return typeof lbl === "string" && lbl.indexOf("년") !== -1
+                                    const isYearLabel = typeof lbl === "string" && (isEnglish ? lbl.indexOf("20") === 0 : lbl.indexOf("년") !== -1);
+                                    return isYearLabel
                                         ? "rgba(255,255,255,0.85)"
                                         : "rgba(255,255,255,0.5)";
                                 },
                                 font: function (ctx) {
                                     const lbl = ctx.tick && ctx.tick.label;
-                                    const isYear = typeof lbl === "string" && lbl.indexOf("년") !== -1;
+                                    const isYear = typeof lbl === "string" && (isEnglish ? lbl.indexOf("20") === 0 : lbl.indexOf("년") !== -1);
                                     return {
                                         family: "inherit",
                                         size: isYear ? 11 : 10,
@@ -1425,6 +1762,7 @@
                                 padding: 10,
                                 callback: (val) => {
                                     if (val === 0) return "0";
+                                    if (isEnglish) return (val / 1000).toFixed(1) + "B";
                                     return (val / 100).toFixed(0) + "억";
                                 },
                                 stepSize: 200
@@ -1446,6 +1784,7 @@
                                 padding: 10,
                                 callback: (val) => {
                                     if (val === 0) return "0";
+                                    if (isEnglish) return (val / 1000).toFixed(1) + "B";
                                     return (val / 100).toFixed(0) + "억";
                                 },
                                 stepSize: 200
